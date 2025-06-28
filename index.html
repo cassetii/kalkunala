@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator AC - Nala Aircon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5aa0 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .form-section {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .result-section {
+            padding: 40px;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #2c5aa0;
+            background: #f0f4ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            accent-color: #2c5aa0;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(44, 90, 160, 0.3);
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #e8f2ff 0%, #f0f4ff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2c5aa0;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-title::before {
+            content: "❄️";
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .btu-result {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+        }
+
+        .recommendation {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .recommendation h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .ac-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .ac-type.recommended {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left-color: #28a745;
+        }
+
+        .brand-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .brand-item {
+            background: #2c5aa0;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 1px solid #f6e2c9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .tips h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tips h4::before {
+            content: "💡";
+            margin-right: 8px;
+        }
+
+        .tips ul {
+            color: #856404;
+            padding-left: 20px;
+        }
+
+        .tips li {
+            margin-bottom: 5px;
+        }
+
+            @media (max-width: 768px) {
+                .main-content {
+                    grid-template-columns: 1fr;
+                }
+                
+                .header h1 {
+                    font-size: 2rem;
+                }
+                
+                .checkbox-group {
+                    grid-template-columns: 1fr;
+                }
+                
+                .brand-list {
+                    grid-template-columns: 1fr;
+                }
+                
+                .order-actions {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .contact-info {
+                    grid-template-columns: 1fr;
+                }
+                
+                .service-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+        .footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Order Section Styles */
+        .order-card {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .order-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .order-header p {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .order-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .order-btn.primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .order-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .order-btn.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .order-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .service-highlight {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .service-highlight h4 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .service-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kalkulator AC Nala Aircon</h1>
+            <p>Tentukan kebutuhan AC yang tepat untuk ruangan Anda</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <form id="acCalculator">
+                    <div class="form-group">
+                        <label for="length">Panjang Ruangan (meter)</label>
+                        <input type="number" id="length" step="0.1" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="width">Lebar Ruangan (meter)</label>
+                        <input type="number" id="width" step="0.1" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height">Tinggi Ruangan (meter)</label>
+                        <input type="number" id="height" step="0.1" min="2" value="3" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roomType">Jenis Ruangan</label>
+                        <select id="roomType" required>
+                            <option value="">Pilih jenis ruangan</option>
+                            <option value="bedroom">Kamar Tidur</option>
+                            <option value="living">Ruang Tamu</option>
+                            <option value="office">Kantor</option>
+                            <option value="kitchen">Dapur</option>
+                            <option value="meeting">Ruang Meeting</option>
+                            <option value="shop">Toko/Retail</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occupants">Jumlah Penghuni Rata-rata</label>
+                        <input type="number" id="occupants" min="1" value="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insulation">Kualitas Isolasi Ruangan</label>
+                        <select id="insulation" required>
+                            <option value="">Pilih kualitas isolasi</option>
+                            <option value="poor">Buruk (banyak celah, jendela besar)</option>
+                            <option value="average">Sedang (standar rumah biasa)</option>
+                            <option value="good">Baik (modern, tertutup rapat)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Faktor Tambahan</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sunlight" value="1000">
+                                <label for="sunlight">Sinar matahari langsung</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kitchen" value="4000">
+                                <label for="kitchen">Dekat dengan dapur</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="electronics" value="500">
+                                <label for="electronics">Banyak elektronik</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="topfloor" value="1000">
+                                <label for="topfloor">Lantai paling atas</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="calculate-btn">Hitung Kebutuhan AC</button>
+                </form>
+            </div>
+
+            <div class="result-section">
+                <div id="results" style="display: none;">
+                    <div class="result-card">
+                        <div class="result-title">Kebutuhan BTU</div>
+                        <div class="btu-result" id="btuResult">-</div>
+                        <div>Luas ruangan: <strong id="areaResult">-</strong> m²</div>
+                    </div>
+
+                    <div class="recommendation">
+                        <h3>Rekomendasi Unit AC</h3>
+                        <div id="acRecommendations"></div>
+                        
+                        <div class="brand-list">
+                            <div class="brand-item">DAIKIN</div>
+                            <div class="brand-item">GREE</div>
+                            <div class="brand-item">LG</div>
+                            <div class="brand-item">PANASONIC</div>
+                        </div>
+                    </div>
+
+                    <div class="tips">
+                        <h4>Tips dari Nala Aircon</h4>
+                        <ul>
+                            <li>Pilih AC dengan BTU 10-20% lebih tinggi untuk performa optimal</li>
+                            <li>Split AC cocok untuk ruang kecil-medium dengan estetika baik</li>
+                            <li>Standing Floor untuk ruang besar dan mudah dipindah</li>
+                            <li>Cassette untuk ruang komersial dengan distribusi udara merata</li>
+                            <li>Pastikan instalasi dilakukan oleh teknisi bersertifikat</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Order Section -->
+                <div id="orderSection" style="display: none;">
+                    <div class="order-card">
+                        <div class="order-header">
+                            <h3>Pesan Sekarang dengan Nala Aircon!</h3>
+                            <p>Dapatkan instalasi dan perawatan AC terbaik dari teknisi berpengalaman</p>
+                        </div>
+                        
+                        <div class="order-actions">
+                            <a href="https://nalaaironorder.vercel.app" target="_blank" class="order-btn primary">
+                                🛒 Pesan AC Sekarang
+                            </a>
+                            <a href="https://www.nalaaircon.id" target="_blank" class="order-btn secondary">
+                                🌐 Kunjungi Website
+                            </a>
+                        </div>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <span class="contact-icon">📍</span>
+                                <div>
+                                    <strong>Makassar Office</strong><br>
+                                    Jln Scarlett Garden no 8, Green River, Tamalate
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">🕒</span>
+                                <div>
+                                    <strong>Jam Operasional</strong><br>
+                                    Senin - Sabtu: 08.00 - 17.00 WITA
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">📱</span>
+                                <div>
+                                    <strong>Follow Instagram</strong><br>
+                                    @nalaaircon
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-highlight">
+                            <h4>✨ Layanan Unggulan Kami:</h4>
+                            <div class="service-grid">
+                                <div class="service-item">Cuci AC Uap Disinfektan</div>
+                                <div class="service-item">Instalasi Profesional</div>
+                                <div class="service-item">Service & Maintenance</div>
+                                <div class="service-item">Garansi Terpercaya</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="placeholder" style="text-align: center; color: #6c757d; padding: 50px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">❄️</div>
+                    <h3>Masukkan Data Ruangan</h3>
+                    <p>Isi formulir di sebelah kiri untuk mendapatkan rekomendasi AC yang tepat</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 Nala Aircon - Integrating Technology and Expertise for Seamless AC Maintenance</p>
+        </div>
+    </div>
+
+    <script>
+        const acSpecs = {
+            split: [
+                { pk: 0.5, btu: 5000, minArea: 8, maxArea: 15 },
+                { pk: 0.75, btu: 7000, minArea: 12, maxArea: 20 },
+                { pk: 1, btu: 9000, minArea: 18, maxArea: 25 },
+                { pk: 1.5, btu: 12000, minArea: 22, maxArea: 35 },
+                { pk: 2, btu: 18000, minArea: 30, maxArea: 45 },
+                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 55 }
+            ],
+            standing: [
+                { pk: 2, btu: 18000, minArea: 30, maxArea: 45 },
+                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 55 },
+                { pk: 3, btu: 30000, minArea: 50, maxArea: 70 },
+                { pk: 5, btu: 48000, minArea: 65, maxArea: 90 }
+            ],
+            cassette: [
+                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 60 },
+                { pk: 3, btu: 30000, minArea: 50, maxArea: 75 },
+                { pk: 4, btu: 36000, minArea: 60, maxArea: 85 },
+                { pk: 5, btu: 48000, minArea: 70, maxArea: 100 }
+            ]
+        };
+
+        const roomTypeMultiplier = {
+            bedroom: 1.0,
+            living: 1.1,
+            office: 1.2,
+            kitchen: 1.4,
+            meeting: 1.3,
+            shop: 1.2
+        };
+
+        const insulationMultiplier = {
+            poor: 1.3,
+            average: 1.1,
+            good: 1.0
+        };
+
+        document.getElementById('acCalculator').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateAC();
+        });
+
+        function calculateAC() {
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const roomType = document.getElementById('roomType').value;
+            const occupants = parseInt(document.getElementById('occupants').value);
+            const insulation = document.getElementById('insulation').value;
+
+            if (!length || !width || !height || !roomType || !insulation) {
+                alert('Mohon lengkapi semua data yang diperlukan');
+                return;
+            }
+
+            // Calculate area
+            const area = length * width;
+
+            // Base BTU calculation (area * height * base factor)
+            let baseBTU = area * height * 150;
+
+            // Apply room type multiplier
+            baseBTU *= roomTypeMultiplier[roomType];
+
+            // Apply insulation multiplier
+            baseBTU *= insulationMultiplier[insulation];
+
+            // Add occupants (600 BTU per person after first 2)
+            if (occupants > 2) {
+                baseBTU += (occupants - 2) * 600;
+            }
+
+            // Add additional factors
+            const additionalFactors = document.querySelectorAll('input[type="checkbox"]:checked');
+            additionalFactors.forEach(factor => {
+                baseBTU += parseInt(factor.value);
+            });
+
+            // Round to nearest 1000
+            const totalBTU = Math.round(baseBTU / 1000) * 1000;
+
+            // Display results
+            displayResults(totalBTU, area);
+        }
+
+        function displayResults(btu, area) {
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('orderSection').style.display = 'block';
+            
+            document.getElementById('btuResult').textContent = btu.toLocaleString() + ' BTU/h';
+            document.getElementById('areaResult').textContent = area.toFixed(1);
+
+            // Generate recommendations
+            const recommendations = generateRecommendations(btu, area);
+            displayRecommendations(recommendations);
+        }
+
+        function generateRecommendations(btu, area) {
+            const recommendations = [];
+
+            // Check each AC type
+            Object.keys(acSpecs).forEach(type => {
+                acSpecs[type].forEach(spec => {
+                    if (btu >= spec.btu * 0.8 && btu <= spec.btu * 1.2 && 
+                        area >= spec.minArea && area <= spec.maxArea) {
+                        recommendations.push({
+                            type: type,
+                            pk: spec.pk,
+                            btu: spec.btu,
+                            suitable: true
+                        });
+                    }
+                });
+            });
+
+            // If no perfect match, find closest
+            if (recommendations.length === 0) {
+                Object.keys(acSpecs).forEach(type => {
+                    const closest = acSpecs[type].reduce((prev, curr) => {
+                        return (Math.abs(curr.btu - btu) < Math.abs(prev.btu - btu)) ? curr : prev;
+                    });
+                    recommendations.push({
+                        type: type,
+                        pk: closest.pk,
+                        btu: closest.btu,
+                        suitable: false
+                    });
+                });
+            }
+
+            return recommendations.sort((a, b) => Math.abs(a.btu - btu) - Math.abs(b.btu - btu));
+        }
+
+        function displayRecommendations(recommendations) {
+            const container = document.getElementById('acRecommendations');
+            container.innerHTML = '';
+
+            const typeNames = {
+                split: 'Split AC',
+                standing: 'Standing Floor AC',
+                cassette: 'Cassette AC'
+            };
+
+            recommendations.forEach((rec, index) => {
+                const div = document.createElement('div');
+                div.className = `ac-type ${rec.suitable && index === 0 ? 'recommended' : ''}`;
+                
+                const efficiency = rec.suitable ? '✅ Cocok' : '⚠️ Alternatif';
+                
+                div.innerHTML = `
+                    <div>
+                        <strong>${typeNames[rec.type]} ${rec.pk} PK</strong><br>
+                        <small>${rec.btu.toLocaleString()} BTU/h - ${efficiency}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: #2c5aa0;">${rec.pk} PK</div>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>

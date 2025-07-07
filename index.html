@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator AC - Nala Aircon</title>
+    <title>Kalkulator AC Lengkap - Nala Aircon</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -49,16 +49,250 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0;
+            min-height: 800px;
+        }
+
+        .room-3d-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #e9ecef;
+            text-align: center;
+        }
+
+        .room-3d-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .room-3d-title:hover {
+            background: rgba(44, 90, 160, 0.1);
+            color: #2c5aa0;
+        }
+
+        .room-3d-title::before {
+            content: "🏠";
+            margin-right: 8px;
+            font-size: 1.3rem;
+        }
+
+        .room-3d-title::after {
+            content: " (Klik untuk 3D)";
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-left: 8px;
+        }
+            font-size: 1.3rem;
+        }
+
+        #room3D {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #90caf9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-2d-view {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .room-svg {
+            width: 90%;
+            height: 90%;
+            max-width: 280px;
+            max-height: 280px;
+        }
+
+        .room-wall {
+            fill: none;
+            stroke: #2c5aa0;
+            stroke-width: 3;
+        }
+
+        .room-floor {
+            fill: #f8f9fa;
+            stroke: #dee2e6;
+            stroke-width: 1;
+        }
+
+        .ac-unit {
+            fill: #ffffff;
+            stroke: #2c5aa0;
+            stroke-width: 2;
+        }
+
+        .window {
+            fill: #87ceeb;
+            stroke: #4682b4;
+            stroke-width: 1;
+        }
+
+        .door {
+            fill: #8b4513;
+            stroke: #654321;
+            stroke-width: 1;
+        }
+
+        .dimension-line {
+            stroke: #666;
+            stroke-width: 1;
+            stroke-dasharray: 2,2;
+        }
+
+        .dimension-text {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            fill: #2c5aa0;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+
+        .room-label {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 10px;
+            fill: #666;
+            text-anchor: middle;
+        }
+
+        .room-perspective {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .room-isometric {
+            transform-style: preserve-3d;
+            perspective: 800px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .room-box {
+            width: 200px;
+            height: 120px;
+            position: relative;
+            transform: rotateX(20deg) rotateY(-30deg);
+            transition: all 0.5s ease;
+        }
+
+        .room-face {
+            position: absolute;
+            border: 2px solid #2c5aa0;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .room-front {
+            width: 200px;
+            height: 120px;
+            transform: translateZ(100px);
+        }
+
+        .room-back {
+            width: 200px;
+            height: 120px;
+            transform: translateZ(0px) rotateY(180deg);
+        }
+
+        .room-left {
+            width: 100px;
+            height: 120px;
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+
+        .room-right {
+            width: 100px;
+            height: 120px;
+            transform: rotateY(90deg) translateZ(200px);
+        }
+
+        .room-top {
+            width: 200px;
+            height: 100px;
+            transform: rotateX(90deg) translateZ(120px);
+            background: rgba(245, 245, 245, 0.9);
+        }
+
+        .room-bottom {
+            width: 200px;
+            height: 100px;
+            transform: rotateX(-90deg) translateZ(0px);
+            background: rgba(240, 240, 240, 0.9);
+        }
+
+        .room-dimensions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .dimension-item {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        .dimension-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+
+        .dimension-value {
+            font-weight: 700;
+            color: #2c5aa0;
+            font-size: 1rem;
+        }
+
+        .room-3d-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: #6c757d;
+        }
+
+        .room-3d-placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
         }
 
         .form-section {
             padding: 40px;
             background: #f8f9fa;
+            overflow-y: auto;
+            max-height: 800px;
         }
 
         .result-section {
             padding: 40px;
             background: white;
+            overflow-y: auto;
+            max-height: 800px;
         }
 
         .form-group {
@@ -91,17 +325,30 @@
             box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
         }
 
+        .form-section-title {
+            color: #2c5aa0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c5aa0;
+        }
+
+        .form-section-title:first-child {
+            margin-top: 0;
+        }
+
         .checkbox-group {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 10px;
             margin-top: 10px;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             background: white;
             border-radius: 8px;
             border: 2px solid #e9ecef;
@@ -133,6 +380,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 20px;
         }
 
         .calculate-btn:hover {
@@ -170,11 +418,37 @@
             margin-bottom: 20px;
         }
 
+        .result-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c5aa0;
+        }
+
         .recommendation {
             background: white;
             border-radius: 12px;
             padding: 20px;
-            margin-top: 20px;
+            margin-bottom: 20px;
             border: 1px solid #e9ecef;
         }
 
@@ -184,37 +458,97 @@
             font-size: 1.2rem;
         }
 
-        .ac-type {
+        .ac-option {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
             margin-bottom: 10px;
-            border-left: 4px solid #28a745;
+            border-left: 4px solid #6c757d;
         }
 
-        .ac-type.recommended {
+        .ac-option.recommended {
             background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             border-left-color: #28a745;
         }
 
-        .brand-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+        .ac-option.alternative {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left-color: #ffc107;
         }
 
-        .brand-item {
-            background: #2c5aa0;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-align: center;
+        .ac-info {
+            flex: 1;
+        }
+
+        .ac-specs {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .efficiency-chart {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .efficiency-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .efficiency-label {
+            width: 120px;
             font-weight: 600;
             font-size: 0.9rem;
+        }
+
+        .efficiency-progress {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+
+        .efficiency-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.5s ease;
+        }
+
+        .efficiency-value {
+            font-weight: 700;
+            color: #2c5aa0;
+            font-size: 0.9rem;
+        }
+
+        .cost-breakdown {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .cost-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: #2c5aa0;
         }
 
         .tips {
@@ -243,49 +577,27 @@
         }
 
         .tips li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
-            @media (max-width: 768px) {
-                .main-content {
-                    grid-template-columns: 1fr;
-                }
-                
-                .header h1 {
-                    font-size: 2rem;
-                }
-                
-                .checkbox-group {
-                    grid-template-columns: 1fr;
-                }
-                
-                .brand-list {
-                    grid-template-columns: 1fr;
-                }
-                
-                .order-actions {
-                    flex-direction: column;
-                    align-items: center;
-                }
-                
-                .contact-info {
-                    grid-template-columns: 1fr;
-                }
-                
-                .service-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
-
-        .footer {
-            background: #1e3a5f;
-            color: white;
+        .placeholder {
             text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
+            color: #6c757d;
+            padding: 50px;
         }
 
-        /* Order Section Styles */
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Order Section */
         .order-card {
             background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
             color: white;
@@ -348,80 +660,65 @@
             transform: translateY(-2px);
         }
 
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
-            text-align: left;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .contact-icon {
-            font-size: 1.2rem;
-            margin-top: 2px;
-        }
-
-        .service-highlight {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+        .footer {
+            background: #1e3a5f;
+            color: white;
+            text-align: center;
             padding: 20px;
-            margin-top: 20px;
-        }
-
-        .service-highlight h4 {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 10px;
-        }
-
-        .service-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
             font-size: 0.9rem;
-            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .result-detail {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-actions {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Kalkulator AC Nala Aircon</h1>
-            <p>Tentukan kebutuhan AC yang tepat untuk ruangan Anda</p>
+            <h1>Kalkulator AC Profesional - Nala Aircon</h1>
+            <p>Perhitungan beban termal akurat untuk solusi AC yang tepat</p>
         </div>
 
         <div class="main-content">
             <div class="form-section">
                 <form id="acCalculator">
+                    <div class="form-section-title">📐 Dimensi Ruangan</div>
+                    
                     <div class="form-group">
                         <label for="length">Panjang Ruangan (meter)</label>
-                        <input type="number" id="length" step="0.1" min="1" required>
+                        <input type="number" id="length" step="0.1" min="1" max="50" required>
+                        <div class="error-message" id="lengthError" style="display: none;"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="width">Lebar Ruangan (meter)</label>
-                        <input type="number" id="width" step="0.1" min="1" required>
+                        <input type="number" id="width" step="0.1" min="1" max="50" required>
+                        <div class="error-message" id="widthError" style="display: none;"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="height">Tinggi Ruangan (meter)</label>
-                        <input type="number" id="height" step="0.1" min="2" value="3" required>
+                        <input type="number" id="height" step="0.1" min="2" max="6" value="3" required>
+                        <div class="error-message" id="heightError" style="display: none;"></div>
                     </div>
+
+                    <div class="form-section-title">🏠 Karakteristik Ruangan</div>
 
                     <div class="form-group">
                         <label for="roomType">Jenis Ruangan</label>
@@ -433,139 +730,258 @@
                             <option value="kitchen">Dapur</option>
                             <option value="meeting">Ruang Meeting</option>
                             <option value="shop">Toko/Retail</option>
+                            <option value="restaurant">Restoran</option>
+                            <option value="server">Server Room</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="occupants">Jumlah Penghuni Rata-rata</label>
-                        <input type="number" id="occupants" min="1" value="2" required>
+                        <input type="number" id="occupants" min="1" max="100" value="2" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="insulation">Kualitas Isolasi Ruangan</label>
-                        <select id="insulation" required>
-                            <option value="">Pilih kualitas isolasi</option>
-                            <option value="poor">Buruk (banyak celah, jendela besar)</option>
-                            <option value="average">Sedang (standar rumah biasa)</option>
-                            <option value="good">Baik (modern, tertutup rapat)</option>
+                        <label for="floorLevel">Lantai Ke-</label>
+                        <select id="floorLevel" required>
+                            <option value="1">Lantai 1</option>
+                            <option value="2">Lantai 2-3</option>
+                            <option value="3">Lantai 4-6</option>
+                            <option value="4">Lantai 7+ (Gedung Tinggi)</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Faktor Tambahan</label>
+                        <label for="roofType">Jenis Atap</label>
+                        <select id="roofType" required>
+                            <option value="">Pilih jenis atap</option>
+                            <option value="concrete">Beton (Gedung/Apartemen)</option>
+                            <option value="tile">Genteng Tanah Liat</option>
+                            <option value="metal">Seng/Metal</option>
+                            <option value="asbestos">Asbes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="windowArea">Luas Jendela/Kaca (m²)</label>
+                        <input type="number" id="windowArea" step="0.1" min="0" max="100" value="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="windowOrientation">Orientasi Jendela Utama</label>
+                        <select id="windowOrientation" required>
+                            <option value="">Pilih orientasi</option>
+                            <option value="north">Utara</option>
+                            <option value="east">Timur</option>
+                            <option value="south">Selatan</option>
+                            <option value="west">Barat</option>
+                            <option value="multiple">Multiple/Sudut</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="insulation">Kualitas Isolasi</label>
+                        <select id="insulation" required>
+                            <option value="">Pilih kualitas isolasi</option>
+                            <option value="poor">Buruk (Banyak celah, ventilasi terbuka)</option>
+                            <option value="average">Sedang (Rumah standar)</option>
+                            <option value="good">Baik (Modern, tertutup rapat)</option>
+                            <option value="excellent">Sangat Baik (Double wall, insulasi)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-section-title">⚡ Beban Panas Tambahan</div>
+
+                    <div class="form-group">
+                        <label for="lightingWatt">Daya Lampu Total (Watt)</label>
+                        <input type="number" id="lightingWatt" min="0" max="5000" value="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="electronicsWatt">Daya Peralatan Elektronik (Watt)</label>
+                        <input type="number" id="electronicsWatt" min="0" max="10000" value="200" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Faktor Panas Tambahan</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="sunlight" value="1000">
-                                <label for="sunlight">Sinar matahari langsung</label>
+                                <input type="checkbox" id="directSunlight" value="2000">
+                                <label for="directSunlight">Sinar matahari langsung (siang hari)</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="kitchen" value="4000">
-                                <label for="kitchen">Dekat dengan dapur</label>
+                                <input type="checkbox" id="nearKitchen" value="3000">
+                                <label for="nearKitchen">Dekat/bersebelahan dengan dapur</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="electronics" value="500">
-                                <label for="electronics">Banyak elektronik</label>
+                                <input type="checkbox" id="topFloor" value="1500">
+                                <label for="topFloor">Lantai paling atas</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="topfloor" value="1000">
-                                <label for="topfloor">Lantai paling atas</label>
+                                <input type="checkbox" id="cornerRoom" value="1000">
+                                <label for="cornerRoom">Ruang sudut (2 dinding luar)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="highCeiling" value="800">
+                                <label for="highCeiling">Plafon tinggi (>3.5m)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="openConcept" value="1200">
+                                <label for="openConcept">Ruang terbuka (open concept)</label>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="calculate-btn">Hitung Kebutuhan AC</button>
+                    <button type="submit" class="calculate-btn">Hitung Beban Termal AC</button>
                 </form>
             </div>
 
             <div class="result-section">
+                <!-- 3D Room Visualization -->
+                <div class="room-3d-container">
+                    <div class="room-3d-title">Visualisasi 3D Ruangan</div>
+                    <div id="room3D">
+                        <div class="room-3d-placeholder" id="room3DPlaceholder">
+                            <div class="room-3d-placeholder-icon">📐</div>
+                            <p>Masukkan dimensi ruangan untuk melihat visualisasi</p>
+                        </div>
+                        
+                        <!-- 2D SVG Visualization (Primary) -->
+                        <div class="room-2d-view" id="room2DView" style="display: none;">
+                            <svg class="room-svg" id="roomSVG" viewBox="0 0 300 300">
+                                <!-- Floor -->
+                                <rect id="roomFloor" x="50" y="50" width="200" height="200" class="room-floor"/>
+                                
+                                <!-- Walls -->
+                                <rect id="roomWalls" x="50" y="50" width="200" height="200" class="room-wall"/>
+                                
+                                <!-- Window -->
+                                <rect id="roomWindow" x="80" y="48" width="40" height="4" class="window"/>
+                                
+                                <!-- Door -->
+                                <rect id="roomDoor" x="48" y="120" width="4" height="30" class="door"/>
+                                
+                                <!-- AC Unit -->
+                                <rect id="acUnit" x="130" y="45" width="40" height="8" class="ac-unit"/>
+                                
+                                <!-- Dimension lines and text -->
+                                <line id="lengthLine" x1="50" y1="270" x2="250" y2="270" class="dimension-line"/>
+                                <text id="lengthText" x="150" y="285" class="dimension-text">- m</text>
+                                
+                                <line id="widthLine" x1="30" y1="50" x2="30" y2="250" class="dimension-line"/>
+                                <text id="widthText" x="20" y="150" class="dimension-text" transform="rotate(-90, 20, 150)">- m</text>
+                                
+                                <!-- Labels -->
+                                <text x="150" y="160" class="room-label">RUANGAN</text>
+                                <text x="150" y="55" class="room-label">AC</text>
+                                <text x="100" y="45" class="room-label">JENDELA</text>
+                                <text x="35" y="140" class="room-label" transform="rotate(-90, 35, 140)">PINTU</text>
+                            </svg>
+                        </div>
+                        
+                        <!-- 3D CSS Visualization (Secondary) -->
+                        <div class="room-perspective" id="roomPerspective">
+                            <div class="room-isometric">
+                                <div class="room-box" id="roomBox">
+                                    <div class="room-face room-front"></div>
+                                    <div class="room-face room-back"></div>
+                                    <div class="room-face room-left"></div>
+                                    <div class="room-face room-right"></div>
+                                    <div class="room-face room-top"></div>
+                                    <div class="room-face room-bottom"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-dimensions" id="roomDimensions" style="display: none;">
+                        <div class="dimension-item">
+                            <div class="dimension-label">Panjang</div>
+                            <div class="dimension-value" id="dim3DLength">-</div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-label">Lebar</div>
+                            <div class="dimension-value" id="dim3DWidth">-</div>
+                        </div>
+                        <div class="dimension-item">
+                            <div class="dimension-label">Tinggi</div>
+                            <div class="dimension-value" id="dim3DHeight">-</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="results" style="display: none;">
                     <div class="result-card">
-                        <div class="result-title">Kebutuhan BTU</div>
+                        <div class="result-title">Hasil Perhitungan Beban Termal</div>
                         <div class="btu-result" id="btuResult">-</div>
-                        <div>Luas ruangan: <strong id="areaResult">-</strong> m²</div>
-                    </div>
-
-                    <div class="recommendation">
-                        <h3>Rekomendasi Unit AC</h3>
-                        <div id="acRecommendations"></div>
                         
-                        <div class="brand-list">
-                            <div class="brand-item">DAIKIN</div>
-                            <div class="brand-item">GREE</div>
-                            <div class="brand-item">LG</div>
-                            <div class="brand-item">PANASONIC</div>
+                        <div class="result-detail">
+                            <div class="detail-item">
+                                <div class="detail-label">Luas Ruangan</div>
+                                <div class="detail-value" id="areaResult">-</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Volume</div>
+                                <div class="detail-value" id="volumeResult">-</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Beban per m²</div>
+                                <div class="detail-value" id="loadPerSqm">-</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Kategori Beban</div>
+                                <div class="detail-value" id="loadCategory">-</div>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="recommendation">
+                        <h3>🎯 Rekomendasi Unit AC</h3>
+                        <div id="acRecommendations"></div>
+                    </div>
+
+                    <div class="efficiency-chart">
+                        <h3>📊 Perbandingan Efisiensi</h3>
+                        <div id="efficiencyChart"></div>
+                    </div>
+
+                    <div class="cost-breakdown">
+                        <h3>💰 Estimasi Biaya</h3>
+                        <div id="costBreakdown"></div>
+                    </div>
+
                     <div class="tips">
-                        <h4>Tips dari Nala Aircon</h4>
-                        <ul>
-                            <li>Pilih AC dengan BTU 10-20% lebih tinggi untuk performa optimal</li>
-                            <li>Split AC cocok untuk ruang kecil-medium dengan estetika baik</li>
-                            <li>Standing Floor untuk ruang besar dan mudah dipindah</li>
-                            <li>Cassette untuk ruang komersial dengan distribusi udara merata</li>
-                            <li>Pastikan instalasi dilakukan oleh teknisi bersertifikat</li>
+                        <h4>Tips Profesional dari Nala Aircon</h4>
+                        <ul id="professionalTips">
+                            <li>Pilih AC dengan kapasitas 110-120% dari kebutuhan BTU untuk performa optimal</li>
+                            <li>Untuk ruang dengan beban panas tinggi, pertimbangkan sistem multi-split</li>
+                            <li>Posisi indoor unit harus mempertimbangkan distribusi udara yang merata</li>
+                            <li>Gunakan timer dan inverter untuk efisiensi energi maksimal</li>
+                            <li>Lakukan maintenance rutin setiap 3-6 bulan untuk menjaga performa</li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Order Section -->
                 <div id="orderSection" style="display: none;">
                     <div class="order-card">
                         <div class="order-header">
-                            <h3>Pesan Sekarang dengan Nala Aircon!</h3>
-                            <p>Dapatkan instalasi dan perawatan AC terbaik dari teknisi berpengalaman</p>
+                            <h3>Konsultasi & Pesan dengan Nala Aircon!</h3>
+                            <p>Dapatkan instalasi profesional dan perawatan AC terbaik</p>
                         </div>
                         
                         <div class="order-actions">
-                            <a href="https://nalaaironorder.vercel.app" target="_blank" class="order-btn primary">
+                            <a href="https://nalaairconorder.vercel.app" target="_blank" class="order-btn primary">
                                 🛒 Pesan AC Sekarang
                             </a>
                             <a href="https://www.nalaaircon.id" target="_blank" class="order-btn secondary">
                                 🌐 Kunjungi Website
                             </a>
                         </div>
-                        
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <span class="contact-icon">📍</span>
-                                <div>
-                                    <strong>Makassar Office</strong><br>
-                                    Jln Scarlett Garden no 8, Green River, Tamalate
-                                </div>
-                            </div>
-                            <div class="contact-item">
-                                <span class="contact-icon">🕒</span>
-                                <div>
-                                    <strong>Jam Operasional</strong><br>
-                                    Senin - Sabtu: 08.00 - 17.00 WITA
-                                </div>
-                            </div>
-                            <div class="contact-item">
-                                <span class="contact-icon">📱</span>
-                                <div>
-                                    <strong>Follow Instagram</strong><br>
-                                    @nalaaircon
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="service-highlight">
-                            <h4>✨ Layanan Unggulan Kami:</h4>
-                            <div class="service-grid">
-                                <div class="service-item">Cuci AC Uap Disinfektan</div>
-                                <div class="service-item">Instalasi Profesional</div>
-                                <div class="service-item">Service & Maintenance</div>
-                                <div class="service-item">Garansi Terpercaya</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <div id="placeholder" style="text-align: center; color: #6c757d; padding: 50px;">
-                    <div style="font-size: 4rem; margin-bottom: 20px;">❄️</div>
-                    <h3>Masukkan Data Ruangan</h3>
-                    <p>Isi formulir di sebelah kiri untuk mendapatkan rekomendasi AC yang tepat</p>
+                <div id="placeholder" class="placeholder">
+                    <div class="placeholder-icon">❄️</div>
+                    <h3>Siap untuk Perhitungan Profesional</h3>
+                    <p>Masukkan data lengkap ruangan Anda untuk mendapatkan perhitungan beban termal yang akurat</p>
                 </div>
             </div>
         </div>
@@ -576,78 +992,179 @@
     </div>
 
     <script>
-        const acSpecs = {
+        // Remove Three.js dependency and use pure CSS/SVG solution
+        // Comprehensive AC specifications database
+        const acDatabase = {
             split: [
-                { pk: 0.5, btu: 5000, minArea: 8, maxArea: 15 },
-                { pk: 0.75, btu: 7000, minArea: 12, maxArea: 20 },
-                { pk: 1, btu: 9000, minArea: 18, maxArea: 25 },
-                { pk: 1.5, btu: 12000, minArea: 22, maxArea: 35 },
-                { pk: 2, btu: 18000, minArea: 30, maxArea: 45 },
-                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 55 }
+                { pk: 0.5, btu: 5000, watts: 450, price: 2500000, minArea: 8, maxArea: 15, seer: 13 },
+                { pk: 0.75, btu: 7500, watts: 650, price: 3200000, minArea: 12, maxArea: 22, seer: 14 },
+                { pk: 1, btu: 9000, watts: 750, price: 4000000, minArea: 18, maxArea: 30, seer: 15 },
+                { pk: 1.5, btu: 12000, watts: 1100, price: 5500000, minArea: 25, maxArea: 40, seer: 16 },
+                { pk: 2, btu: 18000, watts: 1600, price: 7000000, minArea: 35, maxArea: 55, seer: 17 },
+                { pk: 2.5, btu: 24000, watts: 2200, price: 9000000, minArea: 45, maxArea: 70, seer: 18 }
             ],
             standing: [
-                { pk: 2, btu: 18000, minArea: 30, maxArea: 45 },
-                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 55 },
-                { pk: 3, btu: 30000, minArea: 50, maxArea: 70 },
-                { pk: 5, btu: 48000, minArea: 65, maxArea: 90 }
+                { pk: 2, btu: 18000, watts: 1700, price: 8000000, minArea: 35, maxArea: 55, seer: 15 },
+                { pk: 2.5, btu: 24000, watts: 2300, price: 10000000, minArea: 45, maxArea: 70, seer: 16 },
+                { pk: 3, btu: 30000, watts: 2800, price: 12000000, minArea: 60, maxArea: 85, seer: 17 },
+                { pk: 4, btu: 36000, watts: 3500, price: 15000000, minArea: 75, maxArea: 105, seer: 18 },
+                { pk: 5, btu: 48000, watts: 4200, price: 18000000, minArea: 90, maxArea: 130, seer: 19 }
             ],
             cassette: [
-                { pk: 2.5, btu: 24000, minArea: 40, maxArea: 60 },
-                { pk: 3, btu: 30000, minArea: 50, maxArea: 75 },
-                { pk: 4, btu: 36000, minArea: 60, maxArea: 85 },
-                { pk: 5, btu: 48000, minArea: 70, maxArea: 100 }
+                { pk: 2.5, btu: 24000, watts: 2100, price: 12000000, minArea: 45, maxArea: 75, seer: 18 },
+                { pk: 3, btu: 30000, watts: 2600, price: 15000000, minArea: 60, maxArea: 90, seer: 19 },
+                { pk: 4, btu: 36000, watts: 3200, price: 18000000, minArea: 75, maxArea: 110, seer: 20 },
+                { pk: 5, btu: 48000, watts: 4000, price: 22000000, minArea: 95, maxArea: 140, seer: 21 }
             ]
         };
 
-        const roomTypeMultiplier = {
-            bedroom: 1.0,
-            living: 1.1,
-            office: 1.2,
-            kitchen: 1.4,
-            meeting: 1.3,
-            shop: 1.2
+        // Enhanced multipliers for accurate calculation
+        const roomTypeMultipliers = {
+            bedroom: { base: 1.0, occupant: 0.8 },
+            living: { base: 1.1, occupant: 1.0 },
+            office: { base: 1.2, occupant: 1.1 },
+            kitchen: { base: 1.5, occupant: 1.2 },
+            meeting: { base: 1.3, occupant: 1.2 },
+            shop: { base: 1.25, occupant: 1.15 },
+            restaurant: { base: 1.6, occupant: 1.3 },
+            server: { base: 2.0, occupant: 0.5 }
         };
 
-        const insulationMultiplier = {
-            poor: 1.3,
-            average: 1.1,
-            good: 1.0
+        const insulationMultipliers = {
+            poor: 1.4,
+            average: 1.15,
+            good: 1.0,
+            excellent: 0.85
+        };
+
+        const orientationMultipliers = {
+            north: 1.0,
+            east: 1.1,
+            south: 1.05,
+            west: 1.2,
+            multiple: 1.15
+        };
+
+        const roofMultipliers = {
+            concrete: 1.0,
+            tile: 1.1,
+            metal: 1.3,
+            asbestos: 1.2
+        };
+
+        const floorMultipliers = {
+            1: 1.0,
+            2: 1.05,
+            3: 1.1,
+            4: 1.15
         };
 
         document.getElementById('acCalculator').addEventListener('submit', function(e) {
             e.preventDefault();
-            calculateAC();
+            if (validateForm()) {
+                calculateThermalLoad();
+            }
         });
 
-        function calculateAC() {
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['length', 'width', 'height', 'roomType', 'occupants', 'floorLevel', 'roofType', 'windowArea', 'windowOrientation', 'insulation', 'lightingWatt', 'electronicsWatt'];
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const value = field.value.trim();
+                
+                if (!value) {
+                    showError(fieldId, 'Field ini wajib diisi');
+                    isValid = false;
+                } else if (field.type === 'number') {
+                    const num = parseFloat(value);
+                    if (isNaN(num) || num < parseFloat(field.min) || num > parseFloat(field.max)) {
+                        showError(fieldId, `Nilai harus antara ${field.min} - ${field.max}`);
+                        isValid = false;
+                    }
+                }
+            });
+            
+            // Additional validations
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const windowArea = parseFloat(document.getElementById('windowArea').value);
+            const roomArea = length * width;
+            
+            if (windowArea > roomArea * 0.4) {
+                showError('windowArea', 'Luas jendela terlalu besar (maksimal 40% dari luas ruangan)');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function calculateThermalLoad() {
+            // Get form values
             const length = parseFloat(document.getElementById('length').value);
             const width = parseFloat(document.getElementById('width').value);
             const height = parseFloat(document.getElementById('height').value);
             const roomType = document.getElementById('roomType').value;
             const occupants = parseInt(document.getElementById('occupants').value);
+            const floorLevel = document.getElementById('floorLevel').value;
+            const roofType = document.getElementById('roofType').value;
+            const windowArea = parseFloat(document.getElementById('windowArea').value);
+            const windowOrientation = document.getElementById('windowOrientation').value;
             const insulation = document.getElementById('insulation').value;
+            const lightingWatt = parseFloat(document.getElementById('lightingWatt').value);
+            const electronicsWatt = parseFloat(document.getElementById('electronicsWatt').value);
 
-            if (!length || !width || !height || !roomType || !insulation) {
-                alert('Mohon lengkapi semua data yang diperlukan');
-                return;
-            }
-
-            // Calculate area
+            // Calculate basic values
             const area = length * width;
+            const volume = area * height;
 
-            // Base BTU calculation (area * height * base factor)
-            let baseBTU = area * height * 150;
+            // Base BTU calculation using enhanced formula
+            // Base load: 20 BTU per sq ft (Indonesian climate)
+            let baseBTU = area * 215; // 20 BTU/sqft * 10.764 (sqft per sqm)
 
             // Apply room type multiplier
-            baseBTU *= roomTypeMultiplier[roomType];
+            const roomMultiplier = roomTypeMultipliers[roomType];
+            baseBTU *= roomMultiplier.base;
 
             // Apply insulation multiplier
-            baseBTU *= insulationMultiplier[insulation];
+            baseBTU *= insulationMultipliers[insulation];
 
-            // Add occupants (600 BTU per person after first 2)
-            if (occupants > 2) {
-                baseBTU += (occupants - 2) * 600;
-            }
+            // Apply floor level multiplier
+            baseBTU *= floorMultipliers[floorLevel];
+
+            // Apply roof type multiplier
+            baseBTU *= roofMultipliers[roofType];
+
+            // Apply window orientation multiplier
+            baseBTU *= orientationMultipliers[windowOrientation];
+
+            // Add window heat gain (Indonesian tropical climate)
+            const windowBTU = windowArea * 900; // 900 BTU per sqm for tropical climate
+            baseBTU += windowBTU;
+
+            // Add occupant load
+            const occupantBTU = occupants * 400 * roomMultiplier.occupant; // 400 BTU per person
+            baseBTU += occupantBTU;
+
+            // Add lighting load (watts to BTU: 1W = 3.412 BTU)
+            const lightingBTU = lightingWatt * 3.412;
+            baseBTU += lightingBTU;
+
+            // Add electronics load with usage factor
+            const electronicsBTU = electronicsWatt * 3.412 * 0.7; // 70% usage factor
+            baseBTU += electronicsBTU;
 
             // Add additional factors
             const additionalFactors = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -655,60 +1172,97 @@
                 baseBTU += parseInt(factor.value);
             });
 
-            // Round to nearest 1000
-            const totalBTU = Math.round(baseBTU / 1000) * 1000;
+            // Add safety factor (10-20% depending on conditions)
+            const safetyFactor = 1.15; // 15% safety factor
+            const totalBTU = Math.round(baseBTU * safetyFactor / 1000) * 1000;
 
             // Display results
-            displayResults(totalBTU, area);
+            displayResults(totalBTU, area, volume, baseBTU);
         }
 
-        function displayResults(btu, area) {
+        function displayResults(btu, area, volume, baseBTU) {
             document.getElementById('placeholder').style.display = 'none';
             document.getElementById('results').style.display = 'block';
             document.getElementById('orderSection').style.display = 'block';
             
+            // Update basic results
             document.getElementById('btuResult').textContent = btu.toLocaleString() + ' BTU/h';
-            document.getElementById('areaResult').textContent = area.toFixed(1);
+            document.getElementById('areaResult').textContent = area.toFixed(1) + ' m²';
+            document.getElementById('volumeResult').textContent = volume.toFixed(1) + ' m³';
+            document.getElementById('loadPerSqm').textContent = Math.round(btu / area).toLocaleString() + ' BTU/m²';
+            
+            // Determine load category
+            const loadPerSqm = btu / area;
+            let category;
+            if (loadPerSqm < 400) category = 'Ringan';
+            else if (loadPerSqm < 600) category = 'Sedang';
+            else if (loadPerSqm < 800) category = 'Tinggi';
+            else category = 'Sangat Tinggi';
+            
+            document.getElementById('loadCategory').textContent = category;
+            document.getElementById('loadCategory').style.color = 
+                category === 'Ringan' ? '#28a745' :
+                category === 'Sedang' ? '#ffc107' :
+                category === 'Tinggi' ? '#fd7e14' : '#dc3545';
 
             // Generate recommendations
             const recommendations = generateRecommendations(btu, area);
             displayRecommendations(recommendations);
+            
+            // Display efficiency chart
+            displayEfficiencyChart(recommendations);
+            
+            // Display cost breakdown
+            displayCostBreakdown(recommendations[0], btu);
+            
+            // Update tips based on calculation
+            updateProfessionalTips(category, area);
         }
 
         function generateRecommendations(btu, area) {
             const recommendations = [];
-
+            const targetBTU = btu;
+            
             // Check each AC type
-            Object.keys(acSpecs).forEach(type => {
-                acSpecs[type].forEach(spec => {
-                    if (btu >= spec.btu * 0.8 && btu <= spec.btu * 1.2 && 
-                        area >= spec.minArea && area <= spec.maxArea) {
+            Object.keys(acDatabase).forEach(type => {
+                acDatabase[type].forEach(spec => {
+                    // Check if BTU capacity is suitable (80% - 120% of required)
+                    const efficiency = (spec.btu / targetBTU);
+                    const areaMatch = area >= spec.minArea && area <= spec.maxArea;
+                    
+                    if (efficiency >= 0.8 && efficiency <= 1.4) {
                         recommendations.push({
                             type: type,
-                            pk: spec.pk,
-                            btu: spec.btu,
-                            suitable: true
+                            spec: spec,
+                            efficiency: efficiency,
+                            areaMatch: areaMatch,
+                            suitable: efficiency >= 0.9 && efficiency <= 1.2 && areaMatch,
+                            powerConsumption: calculatePowerConsumption(spec.watts),
+                            monthlyCost: calculateMonthlyCost(spec.watts)
                         });
                     }
                 });
             });
 
-            // If no perfect match, find closest
-            if (recommendations.length === 0) {
-                Object.keys(acSpecs).forEach(type => {
-                    const closest = acSpecs[type].reduce((prev, curr) => {
-                        return (Math.abs(curr.btu - btu) < Math.abs(prev.btu - btu)) ? curr : prev;
-                    });
-                    recommendations.push({
-                        type: type,
-                        pk: closest.pk,
-                        btu: closest.btu,
-                        suitable: false
-                    });
-                });
-            }
+            // Sort by suitability and efficiency
+            return recommendations.sort((a, b) => {
+                if (a.suitable && !b.suitable) return -1;
+                if (!a.suitable && b.suitable) return 1;
+                return Math.abs(1 - a.efficiency) - Math.abs(1 - b.efficiency);
+            }).slice(0, 6); // Top 6 recommendations
+        }
 
-            return recommendations.sort((a, b) => Math.abs(a.btu - btu) - Math.abs(b.btu - btu));
+        function calculatePowerConsumption(watts) {
+            // Average 8 hours daily usage
+            const dailyKWh = (watts * 8) / 1000;
+            const monthlyKWh = dailyKWh * 30;
+            return monthlyKWh;
+        }
+
+        function calculateMonthlyCost(watts) {
+            const monthlyKWh = calculatePowerConsumption(watts);
+            const electricityRate = 1444; // IDR per kWh (average residential rate)
+            return monthlyKWh * electricityRate;
         }
 
         function displayRecommendations(recommendations) {
@@ -723,23 +1277,190 @@
 
             recommendations.forEach((rec, index) => {
                 const div = document.createElement('div');
-                div.className = `ac-type ${rec.suitable && index === 0 ? 'recommended' : ''}`;
+                const efficiencyPercent = Math.round(rec.efficiency * 100);
                 
-                const efficiency = rec.suitable ? '✅ Cocok' : '⚠️ Alternatif';
+                let className = 'ac-option';
+                let status = '';
+                
+                if (rec.suitable) {
+                    className += ' recommended';
+                    status = '✅ Sangat Cocok';
+                } else if (rec.efficiency >= 0.8 && rec.efficiency <= 1.4) {
+                    className += ' alternative';
+                    status = '⚠️ Alternatif';
+                } else {
+                    status = '❌ Kurang Cocok';
+                }
+                
+                div.className = className;
                 
                 div.innerHTML = `
-                    <div>
-                        <strong>${typeNames[rec.type]} ${rec.pk} PK</strong><br>
-                        <small>${rec.btu.toLocaleString()} BTU/h - ${efficiency}</small>
+                    <div class="ac-info">
+                        <strong>${typeNames[rec.type]} ${rec.spec.pk} PK</strong><br>
+                        <small>${rec.spec.btu.toLocaleString()} BTU/h • ${status} (${efficiencyPercent}%)</small><br>
+                        <small>Konsumsi: ${rec.powerConsumption.toFixed(0)} kWh/bulan • SEER: ${rec.spec.seer}</small>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: bold; color: #2c5aa0;">${rec.pk} PK</div>
+                    <div class="ac-specs">
+                        <div style="font-weight: bold; color: #2c5aa0; font-size: 1.1rem;">${rec.spec.pk} PK</div>
+                        <div>Rp ${(rec.spec.price / 1000000).toFixed(1)}jt</div>
+                        <div style="color: #28a745;">Rp ${rec.monthlyCost.toLocaleString()}/bln</div>
                     </div>
                 `;
                 
                 container.appendChild(div);
             });
         }
+
+        function displayEfficiencyChart(recommendations) {
+            const container = document.getElementById('efficiencyChart');
+            container.innerHTML = '';
+
+            const topRecs = recommendations.slice(0, 4);
+            
+            topRecs.forEach(rec => {
+                const typeNames = {
+                    split: 'Split',
+                    standing: 'Standing',
+                    cassette: 'Cassette'
+                };
+                
+                const div = document.createElement('div');
+                div.className = 'efficiency-bar';
+                
+                const efficiencyScore = Math.min(100, rec.spec.seer * 4); // SEER to percentage
+                const costScore = Math.max(0, 100 - (rec.monthlyCost / 50000)); // Cost efficiency
+                const overallScore = (efficiencyScore + costScore) / 2;
+                
+                div.innerHTML = `
+                    <div class="efficiency-label">${typeNames[rec.type]} ${rec.spec.pk}PK</div>
+                    <div class="efficiency-progress">
+                        <div class="efficiency-fill" style="width: ${overallScore}%"></div>
+                    </div>
+                    <div class="efficiency-value">${Math.round(overallScore)}%</div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function displayCostBreakdown(recommendation, requiredBTU) {
+            const container = document.getElementById('costBreakdown');
+            
+            if (!recommendation) {
+                container.innerHTML = '<p>Pilih unit AC untuk melihat estimasi biaya</p>';
+                return;
+            }
+            
+            const spec = recommendation.spec;
+            const installationCost = spec.price * 0.15; // 15% of unit price
+            const maintenanceCost = 500000; // Annual maintenance
+            const totalInitial = spec.price + installationCost;
+            
+            container.innerHTML = `
+                <div class="cost-item">
+                    <span>Harga Unit AC</span>
+                    <span>Rp ${spec.price.toLocaleString()}</span>
+                </div>
+                <div class="cost-item">
+                    <span>Instalasi & Perlengkapan</span>
+                    <span>Rp ${installationCost.toLocaleString()}</span>
+                </div>
+                <div class="cost-item">
+                    <span>Biaya Listrik per Bulan</span>
+                    <span>Rp ${recommendation.monthlyCost.toLocaleString()}</span>
+                </div>
+                <div class="cost-item">
+                    <span>Maintenance per Tahun</span>
+                    <span>Rp ${maintenanceCost.toLocaleString()}</span>
+                </div>
+                <div class="cost-item">
+                    <span><strong>Total Investasi Awal</strong></span>
+                    <span><strong>Rp ${totalInitial.toLocaleString()}</strong></span>
+                </div>
+            `;
+        }
+
+        function updateProfessionalTips(category, area) {
+            const tipsContainer = document.getElementById('professionalTips');
+            const tips = [
+                'Pilih AC dengan kapasitas 110-120% dari kebutuhan BTU untuk performa optimal',
+                'Untuk ruang dengan beban panas tinggi, pertimbangkan sistem multi-split',
+                'Posisi indoor unit harus mempertimbangkan distribusi udara yang merata',
+                'Gunakan timer dan inverter untuk efisiensi energi maksimal',
+                'Lakukan maintenance rutin setiap 3-6 bulan untuk menjaga performa'
+            ];
+
+            // Add specific tips based on load category
+            if (category === 'Sangat Tinggi') {
+                tips.push('Beban termal sangat tinggi - pertimbangkan sistem dual zone atau central AC');
+                tips.push('Pastikan insulasi ruangan optimal untuk mengurangi beban kerja AC');
+            } else if (category === 'Tinggi') {
+                tips.push('Beban termal tinggi - gunakan AC dengan inverter untuk efisiensi');
+                tips.push('Pertimbangkan mengurangi sumber panas internal seperti lampu dan elektronik');
+            }
+
+            if (area > 50) {
+                tips.push('Untuk ruang besar, cassette AC memberikan distribusi udara terbaik');
+                tips.push('Pertimbangkan multiple unit kecil daripada satu unit besar untuk fleksibilitas');
+            }
+
+            tipsContainer.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+        }
+
+        // Add input event listeners for real-time validation
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorElement = document.getElementById(this.id + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            });
+        });
+
+        // Auto-calculate window area based on room dimensions
+        document.getElementById('length').addEventListener('input', updateWindowAreaSuggestion);
+        document.getElementById('width').addEventListener('input', updateWindowAreaSuggestion);
+
+        function updateWindowAreaSuggestion() {
+            const length = parseFloat(document.getElementById('length').value) || 0;
+            const width = parseFloat(document.getElementById('width').value) || 0;
+            const area = length * width;
+            
+            if (area > 0) {
+                const suggestedWindow = Math.round(area * 0.1 * 10) / 10; // 10% of room area
+                const windowInput = document.getElementById('windowArea');
+                if (windowInput.value == 2 || windowInput.value == '') { // Only update if default value
+                    windowInput.value = suggestedWindow;
+                }
+            }
+        }
+
+        // Electronics wattage helper based on room type
+        document.getElementById('roomType').addEventListener('change', function() {
+            const roomType = this.value;
+            const electronicsInput = document.getElementById('electronicsWatt');
+            const lightingInput = document.getElementById('lightingWatt');
+            
+            const suggestions = {
+                bedroom: { electronics: 150, lighting: 60 },
+                living: { electronics: 300, lighting: 120 },
+                office: { electronics: 500, lighting: 150 },
+                kitchen: { electronics: 800, lighting: 100 },
+                meeting: { electronics: 400, lighting: 200 },
+                shop: { electronics: 600, lighting: 300 },
+                restaurant: { electronics: 1200, lighting: 400 },
+                server: { electronics: 2000, lighting: 200 }
+            };
+            
+            if (suggestions[roomType]) {
+                if (electronicsInput.value == 200 || electronicsInput.value == '') {
+                    electronicsInput.value = suggestions[roomType].electronics;
+                }
+                if (lightingInput.value == 100 || lightingInput.value == '') {
+                    lightingInput.value = suggestions[roomType].lighting;
+                }
+            }
+        });
     </script>
 </body>
 </html>

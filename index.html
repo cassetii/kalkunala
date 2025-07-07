@@ -69,28 +69,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 8px;
-        }
-
-        .room-3d-title:hover {
-            background: rgba(44, 90, 160, 0.1);
-            color: #2c5aa0;
         }
 
         .room-3d-title::before {
-            content: "🏠";
+            content: "📐";
             margin-right: 8px;
             font-size: 1.3rem;
-        }
-
-        .room-3d-title::after {
-            content: " (Klik untuk 3D)";
-            font-size: 0.8rem;
-            color: #6c757d;
-            margin-left: 8px;
         }
             font-size: 1.3rem;
         }
@@ -172,71 +156,19 @@
         }
 
         .room-perspective {
-            width: 100%;
-            height: 100%;
             display: none;
         }
 
-        .room-isometric {
-            transform-style: preserve-3d;
-            perspective: 800px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .room-box {
-            width: 200px;
-            height: 120px;
-            position: relative;
-            transform: rotateX(20deg) rotateY(-30deg);
-            transition: all 0.5s ease;
-        }
-
-        .room-face {
-            position: absolute;
-            border: 2px solid #2c5aa0;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .room-front {
-            width: 200px;
-            height: 120px;
-            transform: translateZ(100px);
-        }
-
-        .room-back {
-            width: 200px;
-            height: 120px;
-            transform: translateZ(0px) rotateY(180deg);
-        }
-
-        .room-left {
-            width: 100px;
-            height: 120px;
-            transform: rotateY(-90deg) translateZ(100px);
-        }
-
-        .room-right {
-            width: 100px;
-            height: 120px;
-            transform: rotateY(90deg) translateZ(200px);
-        }
-
-        .room-top {
-            width: 200px;
-            height: 100px;
-            transform: rotateX(90deg) translateZ(120px);
-            background: rgba(245, 245, 245, 0.9);
-        }
-
+        .room-isometric,
+        .room-box,
+        .room-face,
+        .room-front,
+        .room-back,
+        .room-left,
+        .room-right,
+        .room-top,
         .room-bottom {
-            width: 200px;
-            height: 100px;
-            transform: rotateX(-90deg) translateZ(0px);
-            background: rgba(240, 240, 240, 0.9);
+            display: none;
         }
 
         .room-dimensions {
@@ -968,7 +900,7 @@
                         </div>
                         
                         <div class="order-actions">
-                            <a href="https://nalaairconorder.vercel.app" target="_blank" class="order-btn primary">
+                            <a href="https://nalaaironorder.vercel.app" target="_blank" class="order-btn primary">
                                 🛒 Pesan AC Sekarang
                             </a>
                             <a href="https://www.nalaaircon.id" target="_blank" class="order-btn secondary">
